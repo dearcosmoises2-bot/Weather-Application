@@ -1,9 +1,121 @@
 const weatherInput = document.getElementById("weatherInput");
 const searchBtn = document.getElementById("searchBtn");
 const forecastRow = document.getElementById("forecastRow");
+const exportBtn = document.getElementById("exportBtn");
+const suggestionsDropdown = document.getElementById("suggestionsDropdown");
 
+// Store current weather data
+let currentWeatherData = null;
+let searchHistory = [];
 
+// Load search history on page load
+window.addEventListener("DOMContentLoaded", () => {
+    loadSearchHistory();
+});
 
+// Load search history from database
+async function loadSearchHistory() {
+    try {
+        const response = await fetch("http://127.0.0.1:5000/history");
+        const data = await response.json();
+        searchHistory = data;
+    } catch (error) {
+        console.error("Error loading search history:", error);
+    }
+}
+
+// Show suggestions when input is focused or has text
+weatherInput.addEventListener("focus", () => {
+    if (searchHistory.length > 0) {
+        displaySuggestions(searchHistory);
+    }
+});
+
+// Filter suggestions as user types
+weatherInput.addEventListener("input", (e) => {
+    const inputValue = e.target.value.toLowerCase();
+    
+    if (inputValue.length === 0) {
+        displaySuggestions(searchHistory);
+    } else {
+        const filtered = searchHistory.filter(item =>
+            item.city.toLowerCase().includes(inputValue)
+        );
+        displaySuggestions(filtered);
+    }
+});
+
+// Hide suggestions when clicking outside
+document.addEventListener("click", (e) => {
+    if (e.target !== weatherInput && e.target !== suggestionsDropdown) {
+        suggestionsDropdown.classList.remove("active");
+    }
+});
+
+// Display suggestions in dropdown
+function displaySuggestions(suggestions) {
+    suggestionsDropdown.innerHTML = "";
+    
+    if (suggestions.length === 0) {
+        suggestionsDropdown.classList.remove("active");
+        return;
+    }
+    
+    suggestions.forEach(item => {
+        const suggestionItem = document.createElement("div");
+        suggestionItem.classList.add("suggestion-item");
+        suggestionItem.textContent = `${item.city} - ${item.weather_condition}`;
+        
+        suggestionItem.addEventListener("click", () => {
+            weatherInput.value = item.city;
+            suggestionsDropdown.classList.remove("active");
+            searchBtn.click();
+        });
+        
+        suggestionsDropdown.appendChild(suggestionItem);
+    });
+    
+    suggestionsDropdown.classList.add("active");
+}
+
+// Export functionality
+exportBtn.addEventListener("click", () => {
+    if (!currentWeatherData) {
+        alert("Please search for a city first to export weather data.");
+        return;
+    }
+
+    // Create JSON object with current weather info
+    const exportData = {
+        city: currentWeatherData.name,
+        country: currentWeatherData.sys.country,
+        temperature: Math.round(currentWeatherData.main.temp),
+        condition: currentWeatherData.weather[0].description,
+        humidity: currentWeatherData.main.humidity,
+        windSpeed: currentWeatherData.wind.speed,
+        pressure: currentWeatherData.main.pressure,
+        feelsLike: Math.round(currentWeatherData.main.feels_like),
+        tempMin: Math.round(currentWeatherData.main.temp_min),
+        tempMax: Math.round(currentWeatherData.main.temp_max),
+        visibility: currentWeatherData.visibility,
+        cloudiness: currentWeatherData.clouds.all,
+        timestamp: new Date().toISOString()
+    };
+
+    // Convert to JSON string
+    const jsonString = JSON.stringify(exportData, null, 2);
+
+    // Create a blob and download
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `weather_${currentWeatherData.name}_${new Date().getTime()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+});
 
 
 
@@ -77,6 +189,9 @@ async function getWeather() {
             return;
         }
 
+        // Store the current weather data for export
+        currentWeatherData = weatherData;
+
         document.querySelector(".temp").textContent =
             `${Math.round(weatherData.main.temp)}°F`;
 
@@ -88,6 +203,10 @@ async function getWeather() {
 
         // Update background based on weather condition
         updateBackgroundByWeather(weatherData.weather[0].description);
+
+        // Refresh search history after successful search
+        await loadSearchHistory();
+        displaySuggestions(searchHistory);
 
         // 5-day forecast
         const forecastResponse = await fetch(

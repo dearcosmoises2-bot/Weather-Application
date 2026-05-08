@@ -18,22 +18,47 @@ body {
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.light-theme {
-    background: linear-gradient(135deg, #f5f7ff 0%, #e8ecff 50%, #f0f2ff 100%);
+
+
+
+
+
+
+
+
+
+
+.export-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.3px;
+    font-family: 'Inter', sans-serif;
+    z-index: 1000;
 }
 
-
-
-
-
-
-
-
-
-
-
-.theme-option:hover {
+.export-btn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.export-btn:active {
+    transform: translateY(0);
+}
+
+.export-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* Weather-based backgrounds */
@@ -70,10 +95,6 @@ body.weather-foggy {
     background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%) !important;
 }
 
-
-
-
-
 .weather-container {
     background: rgba(255, 255, 255, 0.95);
     
@@ -87,8 +108,6 @@ body.weather-foggy {
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-
 
 .weather-header {
     text-align: center;
@@ -115,6 +134,11 @@ body.weather-foggy {
     margin-top: 30px;
 }
 
+.search-input-wrapper {
+    flex: 1;
+    position: relative;
+}
+
 .weather-input {
     flex: 1;
     padding: 16px 24px;
@@ -125,11 +149,50 @@ body.weather-foggy {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: rgba(255, 255, 255, 0.8);
     color: #1a1a2e;
+    width: 100%;
 }
 
 .weather-input::placeholder {
     color: #b0b0c0;
     font-weight: 400;
+}
+
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #e8e8f0;
+    border-top: none;
+    border-radius: 0 0 15px 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-dropdown.active {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 12px 24px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+    color: #1a1a2e;
+    font-size: 0.95em;
+}
+
+.suggestion-item:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
 }
 
 

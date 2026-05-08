@@ -8,19 +8,23 @@
     <link rel="stylesheet" href="../assets/css/index.css">
 </head>
 <body>
-    
+    <button class="export-btn" id="exportBtn">Export</button>
 
     <div class="weather-container">
         <header class="weather-header">
             <h1>Weather Forecast</h1>
         </header>
         <div class="search-section">
-            <input 
-                type="text" 
-                class="weather-input" 
-                placeholder="Enter location or add weather info..."
-                id="weatherInput"
-            >
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    class="weather-input" 
+                    placeholder="Enter location or add weather info..."
+                    id="weatherInput"
+                    autocomplete="off"
+                >
+                <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
+            </div>
             <button class="search-btn" id="searchBtn">Search</button>
         </div>
 
