@@ -110,7 +110,7 @@ exportBtn.addEventListener("click", () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `weather_${currentWeatherData.name}_${new Date().getTime()}.json`;
+    link.download = `weather_${currentWeatherData.name}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
