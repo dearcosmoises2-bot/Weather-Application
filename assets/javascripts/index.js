@@ -207,6 +207,8 @@ async function getWeather() {
         // Refresh search history after successful search
         await loadSearchHistory();
         displaySuggestions(searchHistory);
+        suggestionsDropdown.classList.remove("active");
+
 
         // 5-day forecast
         const forecastResponse = await fetch(
