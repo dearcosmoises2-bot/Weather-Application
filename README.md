@@ -39,14 +39,15 @@ To run this project locally, you will need:
 - Required Python packages from `requirements.txt`
 - Create a .env file using the .env.example as an instruction
 
+## Database Setup
+
+To create the database and table, run the included SQL file 
+
 ## Installation
 
 Install the required Python packages by running in the terminal:
 
 pip install Flask flask-cors requests mysql-connector-python python-dotenv
 
-## Database Setup
-
-To create the database and table, run the included SQL file 
-
+After everything is installed, run the app.py and then run the index.html
 
