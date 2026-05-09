@@ -1,3 +1,7 @@
+Moises De Arcos
+
+The Product Manager Accelerator Program is designed to support PM professionals through every stage of their careers.
+
 # Weather-Application
 
 This project is a weather application that allows users to search for current weather information and a 5-day forecast for a requested location.
