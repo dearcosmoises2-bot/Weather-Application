@@ -1,5 +1,4 @@
 # Weather-Application
-# Weather Application
 
 This project is a weather application that allows users to search for current weather information and a 5-day forecast for a requested location.
 
