@@ -45,7 +45,7 @@ To run this project locally, you will need:
 
 ## Database Setup
 
-To create the database and table, run the included SQL file 
+To create the database and table, run the included SQL file in your own query
 
 ## Installation
 
